@@ -7,7 +7,15 @@ import './main.css';
 
 (function() {
 
-    const FPS = 30;
+    const config = {
+
+        world: {
+            width: 900,
+            height: 600
+        },
+
+        fps: 30
+    };
 
     const start = function() {
         engine.start();
@@ -19,7 +27,7 @@ import './main.css';
     };
 
     const resize = function() {
-        display.resize();
+        display.resize(config.world.width, config.world.height);
     };
 
     const update = function() {
@@ -29,11 +37,10 @@ import './main.css';
 
     const controller = new Controller();
     const display = new Display(document.querySelector('canvas'));
-    const game = new Game(1410, 870);
+    const game = new Game(config.world);
     const player = game.player;
-    const engine = new Engine(render, update, FPS);
+    const engine = new Engine(render, update, config.fps);
 
-    window.addEventListener('resize',  display.handleResize.bind(display));
     window.addEventListener('keydown', controller.handleKeyPress.bind(controller));
     window.addEventListener('keyup',   controller.handleKeyPress.bind(controller));
 

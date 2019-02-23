@@ -4,18 +4,18 @@ class Game {
     width: number;
     height: number;
 
-    constructor(width: number, height: number) {
-        this.player = new Player(5, 50, 5, 30, 'rgb(0, 0, 0)');
-        this.width = width;
-        this.height = height;
+    constructor(world: any) {
+        this.player = new Player(10, world.height / 2 - 60, 15, 120, 'rgb(0, 0, 0)');
+        this.width = world.width;
+        this.height = world.height;
     }
 
     collideObject(obj: Shape) {
         if (obj.y <= 0) {
             obj.y = 0;
         }
-        if (obj.y - obj.height >= this.height) {
-            obj.y = this.height;
+        if (obj.y + obj.height >= this.height) {
+            obj.y = this.height - obj.height;
         }
     }
 
@@ -57,9 +57,9 @@ class Player extends Shape {
 
     move(up: boolean, down: boolean) {
         if (up) {
-            this.dy = this.dy - .5;
+            this.dy = this.dy - 1;
         } else if (down) {
-            this.dy = this.dy + .5;
+            this.dy = this.dy + 1;
         } else {
             this.dy = 0;
         }

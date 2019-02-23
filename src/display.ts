@@ -15,7 +15,6 @@ class Display {
 
         this.buffer.fillStyle = obj.color;
         this.buffer.fillRect(Math.floor(obj.x), Math.floor(obj.y), obj.width, obj.height);
-
     }
 
     private drawBG(color: string): void {
@@ -33,23 +32,20 @@ class Display {
         );
     }
 
-    resize() {
+    resize(width?: number, height?: number) {
 
-        const MARGIN = 32;
+        width = width || document.documentElement.clientWidth;
+        height = height || document.documentElement.clientHeight;
 
-        const width = document.documentElement.clientWidth;
-        const height = document.documentElement.clientHeight;
+        this.context.canvas.width = width;
+        this.context.canvas.height = height;
 
-        this.context.canvas.height = height - MARGIN;
-        this.context.canvas.width = width - MARGIN;
+        this.buffer.canvas.width = width;
+        this.buffer.canvas.height = height;
 
         this.context.imageSmoothingEnabled = false;
 
         this.render();
-    }
-
-    handleResize() {
-        this.resize();
     }
 
 }
