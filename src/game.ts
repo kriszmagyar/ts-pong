@@ -1,15 +1,23 @@
+import { Shape } from './types';
+
 class Game {
 
-    player1: Player;
-    player2: Player;
     width: number;
     height: number;
 
+    player1: Player;
+    player2: Player;
+
+    ball: Ball;
+
     constructor(world: any) {
-        this.player1 = new Player(10, world.height / 2 - 60, 15, 120, 'rgb(0, 0, 0)');
-        this.player2 = new Player(world.width - 25, world.height / 2 - 60, 15, 120, 'rgb(0, 0, 0)');
         this.width = world.width;
         this.height = world.height;
+
+        this.player1 = new Player(10, this.height / 2 - 60, 15, 120);
+        this.player2 = new Player(this.width - 25, this.height / 2 - 60, 15, 120);
+
+        this.ball = new Ball(this.width / 2, this.height / 2, 15, 15);
     }
 
     collideObject(obj: Player) {
@@ -23,9 +31,11 @@ class Game {
         }
     }
 
+
     update() {
         this.player1.update();
         this.player2.update();
+        this.ball.update();
 
         this.collideObject(this.player1);
         this.collideObject(this.player2);
@@ -33,28 +43,12 @@ class Game {
 
 }
 
-export class Shape {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    color: string;
-
-    constructor(x: number, y: number, width?: number, height?: number, color?: string) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.color = color;
-    }
-}
-
 class Player extends Shape {
 
     dx: number;
     dy: number;
 
-    constructor(x: number, y: number, width: number, height: number, color: string) {
+    constructor(x: number, y: number, width: number, height: number, color?: string) {
         super(x, y, width, height, color);
 
         this.dx = 0;
@@ -72,6 +66,24 @@ class Player extends Shape {
                 ? Math.max(this.dy - 1, 0)
                 : Math.min(this.dy + 1, 0);
         }
+    }
+
+    update() {
+        this.x += this.dx;
+        this.y += this.dy;
+    }
+
+}
+
+class Ball extends Shape {
+
+    dx: number;
+    dy: number;
+
+    constructor(x: number, y: number, width: number, height: number, color?: string) {
+        super(x, y, width, height, color);
+        this.dx = 5;
+        this.dy = 5;
     }
 
     update() {

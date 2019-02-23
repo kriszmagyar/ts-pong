@@ -22,7 +22,7 @@ import './main.css';
     };
 
     const render = function() {
-        display.draw([player1, player2]);
+        display.draw([player1, player2, ball]);
         display.render();
     };
 
@@ -43,6 +43,7 @@ import './main.css';
 
     const player1 = game.player1;
     const player2 = game.player2;
+    const ball = game.ball;
 
     window.addEventListener('keydown', controller.handleKeyPress.bind(controller));
     window.addEventListener('keyup',   controller.handleKeyPress.bind(controller));

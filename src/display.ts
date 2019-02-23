@@ -1,4 +1,4 @@
-import { Shape } from './game';
+import { Shape } from './types';
 
 class Display {
 
