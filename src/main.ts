@@ -22,7 +22,7 @@ import './main.css';
     };
 
     const render = function() {
-        display.draw(player);
+        display.draw([player1, player2]);
         display.render();
     };
 
@@ -31,15 +31,18 @@ import './main.css';
     };
 
     const update = function() {
-        player.move(controller.up, controller.down);
+        player1.move(controller.keyW, controller.keyS);
+        player2.move(controller.arrowUp, controller.arrowDown);
         game.update();
     };
 
     const controller = new Controller();
     const display = new Display(document.querySelector('canvas'));
     const game = new Game(config.world);
-    const player = game.player;
     const engine = new Engine(render, update, config.fps);
+
+    const player1 = game.player1;
+    const player2 = game.player2;
 
     window.addEventListener('keydown', controller.handleKeyPress.bind(controller));
     window.addEventListener('keyup',   controller.handleKeyPress.bind(controller));

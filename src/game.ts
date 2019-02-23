@@ -1,27 +1,34 @@
 class Game {
 
-    player: Player;
+    player1: Player;
+    player2: Player;
     width: number;
     height: number;
 
     constructor(world: any) {
-        this.player = new Player(10, world.height / 2 - 60, 15, 120, 'rgb(0, 0, 0)');
+        this.player1 = new Player(10, world.height / 2 - 60, 15, 120, 'rgb(0, 0, 0)');
+        this.player2 = new Player(world.width - 25, world.height / 2 - 60, 15, 120, 'rgb(0, 0, 0)');
         this.width = world.width;
         this.height = world.height;
     }
 
-    collideObject(obj: Shape) {
+    collideObject(obj: Player) {
         if (obj.y <= 0) {
             obj.y = 0;
+            obj.dy = 0;
         }
         if (obj.y + obj.height >= this.height) {
             obj.y = this.height - obj.height;
+            obj.dy = 0;
         }
     }
 
     update() {
-        this.player.update();
-        this.collideObject(this.player);
+        this.player1.update();
+        this.player2.update();
+
+        this.collideObject(this.player1);
+        this.collideObject(this.player2);
     }
 
 }
@@ -61,7 +68,9 @@ class Player extends Shape {
         } else if (down) {
             this.dy = this.dy + 1;
         } else {
-            this.dy = 0;
+            this.dy = this.dy > 0
+                ? Math.max(this.dy - 1, 0)
+                : Math.min(this.dy + 1, 0);
         }
     }
 

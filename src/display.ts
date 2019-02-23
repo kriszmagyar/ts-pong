@@ -10,11 +10,14 @@ class Display {
         this.buffer = document.createElement('canvas').getContext('2d');
     }
 
-    draw(obj: Shape): void {
+    draw(shapes: Shape[]): void {
         this.drawBG('rgb(256, 256, 256)');
 
-        this.buffer.fillStyle = obj.color;
-        this.buffer.fillRect(Math.floor(obj.x), Math.floor(obj.y), obj.width, obj.height);
+        for (let obj of shapes) {
+            this.buffer.fillStyle = obj.color;
+            this.buffer.fillRect(Math.floor(obj.x), Math.floor(obj.y), obj.width, obj.height);
+        }
+
     }
 
     private drawBG(color: string): void {

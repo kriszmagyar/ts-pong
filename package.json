@@ -1,5 +1,5 @@
 {
-  "name": "start-game",
+  "name": "pong",
   "version": "0.0.1",
   "description": "A simple game starter template with TS and webpack",
   "main": "index.js",

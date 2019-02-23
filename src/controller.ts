@@ -1,19 +1,29 @@
 class Controller {
 
-    up: boolean;
-    down: boolean;
+    arrowUp: boolean;
+    arrowDown: boolean;
+
+    keyW: boolean;
+    keyS: boolean;
 
     constructor() {
-        this.up = false;
-        this.down = false;
+        this.arrowUp = false;
+        this.arrowDown = false;
+
+        this.keyW = false;
+        this.keyS = false;
     }
 
     keyPress(type: string, code: string) {
         const isKeyDown = type === 'keydown' ? true : false;
         switch (code) {
-            case 'ArrowUp': this.up = isKeyDown;
+            case 'ArrowUp': this.arrowUp = isKeyDown;
                 break;
-            case 'ArrowDown': this.down = isKeyDown;
+            case 'ArrowDown': this.arrowDown = isKeyDown;
+                break;
+            case 'KeyW': this.keyW = isKeyDown;
+                break;
+            case 'KeyS': this.keyS = isKeyDown;
                 break;
         }
     }
