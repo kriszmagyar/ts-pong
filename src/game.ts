@@ -4,12 +4,14 @@ class Game {
 
     width: number;
     height: number;
-    private state: 'SERVE' | 'PLAY';
 
     player1: Player;
     player2: Player;
 
     ball: Ball;
+
+    private state: 'SERVE' | 'PLAY' | 'END';
+    private scoreToWin = 10;
 
     constructor(world: any) {
         this.width = world.width;
@@ -80,6 +82,13 @@ class Game {
 
     update(enter: boolean) {
 
+        if (this.state === 'END') {
+            if (enter) {
+                this.reset();
+            }
+            return;
+        }
+
         this.player1.update();
         this.player2.update();
 
@@ -100,35 +109,38 @@ class Game {
 
     score(player: Player) {
         player.addScore();
-        this.state = 'SERVE';
+        if (player.score >= this.scoreToWin) {
+            this.win(player);
+            return;
+        }
+        this.reset();
+    }
 
+    reset() {
+        this.state = 'SERVE';
         this.ball.x = this.width / 2;
         this.ball.y = this.height / 2;
         this.ball.dx = 0;
         this.ball.dy = 0;
     }
 
+    win(player: Player) {
+        this.state = 'END';
+    }
+
 }
 
 class Player extends MovingShape {
 
-    private _score: number;
+    score: number;
 
     constructor(x: number, y: number, width: number, height: number, color?: string) {
         super(x, y, width, height, color);
         this.score = 0;
     }
 
-    get score() {
-        return this._score;
-    }
-
-    set score(score: number) {
-        this._score = score;
-    }
-
     addScore() {
-        this._score++;
+        this.score++;
     }
 
     move(up: boolean, down: boolean) {
