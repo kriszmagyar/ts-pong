@@ -48,8 +48,8 @@ class Display {
 
     resize(width?: number, height?: number) {
 
-        width = width || document.documentElement.clientWidth;
-        height = height || document.documentElement.clientHeight;
+        width = width || document.documentElement.clientWidth - 32;
+        height = height || document.documentElement.clientHeight - 32;
 
         this.context.canvas.width = width;
         this.context.canvas.height = height;
