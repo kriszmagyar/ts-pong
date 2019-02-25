@@ -11,7 +11,7 @@ class Game {
     ball: Ball;
 
     private state: 'SERVE' | 'PLAY' | 'END';
-    private scoreToWin = 10;
+    private scoreToWin = 3;
 
     constructor(world: any) {
         this.width = world.width;
@@ -21,7 +21,7 @@ class Game {
         this.player1 = new Player(10, this.height / 2 - 60, 15, 120);
         this.player2 = new Player(this.width - 25, this.height / 2 - 60, 15, 120);
 
-        this.ball = new Ball(this.width / 2, this.height / 2, 15, 15);
+        this.ball = new Ball(this.width / 2 - 8, this.height / 2 - 8, 16, 16);
     }
 
     private collidePlayer(player: Player) {
@@ -113,10 +113,19 @@ class Game {
             this.win(player);
             return;
         }
-        this.reset();
+        this.resetBall();
     }
 
     reset() {
+        this.resetBall();
+
+        this.player1.score = 0;
+        this.player2.score = 0;
+        this.player1.isWon = false;
+        this.player2.isWon = false;
+    }
+
+    resetBall() {
         this.state = 'SERVE';
         this.ball.x = this.width / 2;
         this.ball.y = this.height / 2;
@@ -126,16 +135,19 @@ class Game {
 
     win(player: Player) {
         this.state = 'END';
+        player.isWon = true;
     }
 
 }
 
 class Player extends MovingShape {
 
+    isWon: boolean;
     score: number;
 
     constructor(x: number, y: number, width: number, height: number, color?: string) {
         super(x, y, width, height, color);
+        this.isWon = false;
         this.score = 0;
     }
 
@@ -164,8 +176,8 @@ class Ball extends MovingShape {
     }
 
     start() {
-        this.dx = 5;
-        this.dy = 5;
+        this.dx = 10;
+        this.dy = 10;
     }
 
 }

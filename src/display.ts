@@ -1,5 +1,3 @@
-import { Shape } from './types';
-
 class Display {
 
     private buffer: CanvasRenderingContext2D;
@@ -10,7 +8,7 @@ class Display {
         this.buffer = document.createElement('canvas').getContext('2d');
     }
 
-    draw(shapes: Shape[]): void {
+    draw(shapes: any) {
         this.drawBG('rgb(256, 256, 256)');
 
         for (let obj of shapes) {
@@ -18,9 +16,22 @@ class Display {
             this.buffer.fillRect(Math.floor(obj.x), Math.floor(obj.y), obj.width, obj.height);
         }
 
+        const player1 = shapes[0];
+        const player2 = shapes[1];
+
+        this.buffer.font = '72px serif';
+        this.buffer.textAlign = 'center';
+        if (player1.isWon) {
+            this.buffer.fillText('Player 1 won!', this.context.canvas.width / 2, 100);
+        } else if (player2.isWon) {
+            this.buffer.fillText('Player 2 won!', this.context.canvas.width / 2, 100);
+        } else {
+            this.buffer.fillText(`${player1.score} : ${player2.score}`, this.context.canvas.width / 2, 100);
+        }
+
     }
 
-    private drawBG(color: string): void {
+    private drawBG(color: string) {
         this.buffer.fillStyle = color;
         this.buffer.fillRect(0, 0, this.buffer.canvas.width, this.buffer.canvas.height);
     }
