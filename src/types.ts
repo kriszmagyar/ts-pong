@@ -24,4 +24,9 @@ export class MovingShape extends Shape {
         this.dx = 0;
         this.dy = 0;
     }
+
+    update() {
+        this.x += this.dx;
+        this.y += this.dy;
+    }
 }

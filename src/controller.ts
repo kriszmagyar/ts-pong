@@ -6,12 +6,16 @@ class Controller {
     keyW: boolean;
     keyS: boolean;
 
+    keyEnter: boolean;
+
     constructor() {
         this.arrowUp = false;
         this.arrowDown = false;
 
         this.keyW = false;
         this.keyS = false;
+
+        this.keyEnter = false;
     }
 
     keyPress(type: string, code: string) {
@@ -24,6 +28,8 @@ class Controller {
             case 'KeyW': this.keyW = isKeyDown;
                 break;
             case 'KeyS': this.keyS = isKeyDown;
+                break;
+            case 'Enter': this.keyEnter = isKeyDown;
                 break;
         }
     }

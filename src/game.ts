@@ -1,9 +1,10 @@
-import { Shape } from './types';
+import { MovingShape } from './types';
 
 class Game {
 
     width: number;
     height: number;
+    private state: 'SERVE' | 'PLAY';
 
     player1: Player;
     player2: Player;
@@ -13,6 +14,7 @@ class Game {
     constructor(world: any) {
         this.width = world.width;
         this.height = world.height;
+        this.state = 'SERVE';
 
         this.player1 = new Player(10, this.height / 2 - 60, 15, 120);
         this.player2 = new Player(this.width - 25, this.height / 2 - 60, 15, 120);
@@ -49,21 +51,13 @@ class Game {
 
         // Ball scores to left
         if (ball.x <= 0) {
-            ball.x = this.width / 2;
-            ball.y = this.height / 2;
-            ball.dx = 0;
-            ball.dy = 0;
-            console.log('Score to Player 2!');
+            this.score(p2);
             return true;
         }
 
         // Ball scores to right
         if (ball.x + ball.width >= this.width) {
-            ball.x = this.width / 2;
-            ball.y = this.height / 2;
-            ball.dx = 0;
-            ball.dy = 0;
-            console.log('Score to Player 1!');
+            this.score(p1);
             return true;
         }
 
@@ -84,29 +78,57 @@ class Game {
         return false;
     }
 
-    update() {
+    update(enter: boolean) {
+
         this.player1.update();
         this.player2.update();
-        this.ball.update();
 
         this.collidePlayer(this.player1);
         this.collidePlayer(this.player2);
+
+        if (this.state === 'SERVE') {
+            if (enter) {
+                this.state = 'PLAY';
+                this.ball.start();
+            }
+            return;
+        }
+
+        this.ball.update();
         this.collideBall(this.ball, this.player1, this.player2);
+    }
+
+    score(player: Player) {
+        player.addScore();
+        this.state = 'SERVE';
+
+        this.ball.x = this.width / 2;
+        this.ball.y = this.height / 2;
+        this.ball.dx = 0;
+        this.ball.dy = 0;
     }
 
 }
 
-class Player extends Shape {
+class Player extends MovingShape {
 
-    dx: number;
-    dy: number;
+    private _score: number;
 
     constructor(x: number, y: number, width: number, height: number, color?: string) {
         super(x, y, width, height, color);
+        this.score = 0;
+    }
 
-        this.dx = 0;
-        this.dy = 0;
+    get score() {
+        return this._score;
+    }
 
+    set score(score: number) {
+        this._score = score;
+    }
+
+    addScore() {
+        this._score++;
     }
 
     move(up: boolean, down: boolean) {
@@ -121,27 +143,17 @@ class Player extends Shape {
         }
     }
 
-    update() {
-        this.x += this.dx;
-        this.y += this.dy;
-    }
-
 }
 
-class Ball extends Shape {
-
-    dx: number;
-    dy: number;
+class Ball extends MovingShape {
 
     constructor(x: number, y: number, width: number, height: number, color?: string) {
         super(x, y, width, height, color);
-        this.dx = -5;
-        this.dy = -5;
     }
 
-    update() {
-        this.x += this.dx;
-        this.y += this.dy;
+    start() {
+        this.dx = 5;
+        this.dy = 5;
     }
 
 }

@@ -9,7 +9,7 @@ class Engine {
     render: Function;
     update: Function;
 
-    constructor(render: Function, update: Function, fps: number) {
+    constructor(render: Function, update: Function, fps: number = 30) {
         this.accumulatedTime = 0;
         this.animationFrameRequest = 0;
         this.time = 0;

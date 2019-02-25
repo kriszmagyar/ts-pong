@@ -12,9 +12,7 @@ import './main.css';
         world: {
             width: 900,
             height: 600
-        },
-
-        fps: 30
+        }
     };
 
     const start = function() {
@@ -33,13 +31,13 @@ import './main.css';
     const update = function() {
         player1.move(controller.keyW, controller.keyS);
         player2.move(controller.arrowUp, controller.arrowDown);
-        game.update();
+        game.update(controller.keyEnter);
     };
 
     const controller = new Controller();
     const display = new Display(document.querySelector('canvas'));
     const game = new Game(config.world);
-    const engine = new Engine(render, update, config.fps);
+    const engine = new Engine(render, update);
 
     const player1 = game.player1;
     const player2 = game.player2;
