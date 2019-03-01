@@ -1,4 +1,4 @@
-import { MovingShape } from './types';
+import { MovingShape, World } from './types';
 
 class Game {
 
@@ -13,7 +13,7 @@ class Game {
     private state: 'SERVE' | 'PLAY' | 'END';
     private scoreToWin = 3;
 
-    constructor(world: any) {
+    constructor(world: World) {
         this.width = world.width;
         this.height = world.height;
         this.state = 'SERVE';
@@ -21,7 +21,8 @@ class Game {
         this.player1 = new Player(10, this.height / 2 - 60, 15, 120);
         this.player2 = new Player(this.width - 25, this.height / 2 - 60, 15, 120);
 
-        this.ball = new Ball(this.width / 2 - 8, this.height / 2 - 8, 16, 16);
+        this.ball = new Ball(this.width / 2, this.height / 2, 16, 16);
+        console.log(typeof this.player1);
     }
 
     private collidePlayer(player: Player) {
@@ -118,24 +119,18 @@ class Game {
 
     reset() {
         this.resetBall();
-
-        this.player1.score = 0;
-        this.player2.score = 0;
-        this.player1.isWon = false;
-        this.player2.isWon = false;
+        this.player1.reset();
+        this.player2.reset();
     }
 
     resetBall() {
         this.state = 'SERVE';
-        this.ball.x = this.width / 2;
-        this.ball.y = this.height / 2;
-        this.ball.dx = 0;
-        this.ball.dy = 0;
+        this.ball.reset(this.width / 2, this.height / 2);
     }
 
     win(player: Player) {
         this.state = 'END';
-        player.isWon = true;
+        player.won();
     }
 
 }
@@ -167,17 +162,37 @@ class Player extends MovingShape {
         }
     }
 
+    reset() {
+        this.score = 0;
+        this.isWon = false;
+    }
+
+    won() {
+        this.isWon = true;
+    }
+
 }
 
 class Ball extends MovingShape {
 
+    speed: number;
+
     constructor(x: number, y: number, width: number, height: number, color?: string) {
         super(x, y, width, height, color);
+        this.reset(x, y);
+        this.speed = 10;
     }
 
     start() {
-        this.dx = 10;
-        this.dy = 10;
+        this.dx = this.speed * 1;
+        this.dy = this.speed * 1;
+    }
+
+    reset(x: number, y: number) {
+        this.x = x - this.width / 2;
+        this.y = y - this.height / 2;
+        this.dx = 0;
+        this.dy = 0;
     }
 
 }

@@ -30,3 +30,8 @@ export class MovingShape extends Shape {
         this.y += this.dy;
     }
 }
+
+export interface World {
+    width: number;
+    height: number;
+}
